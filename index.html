@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rillón &amp; Lea-Plaza Abogados · Santiago, Chile</title>
+  <meta name="description" content="Rillón &amp; Lea-Plaza, estudio jurídico especializado en derecho civil, corporativo, laboral y de familia. Santiago, Chile.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cormorant+SC:wght@300;400;500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+
+  <!--
+  ═══════════════════════════════════════════════
+  EMAILJS — CONFIGURACIÓN PARA PROGRAMADOR
+  ───────────────────────────────────────────────
+  1. Crear cuenta gratuita en https://www.emailjs.com/
+  2. Ir a Email Services → Add New Service → conectar Gmail/Outlook
+  3. Ir a Email Templates → Create New Template
+     Asignar estas variables en el template:
+       {{from_name}}   → nombre del consultante
+       {{from_email}}  → email del consultante
+       {{phone}}       → teléfono
+       {{area}}        → área legal
+       {{message}}     → descripción del caso
+     El "To Email" del template debe ser el correo del estudio.
+  4. Copiar: Service ID, Template ID, Public Key
+  5. Pegar abajo en EMAILJS_CONFIG
+  ═══════════════════════════════════════════════
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <style>
+    /* ─────────────────────────────────────────
+       RESET Y VARIABLES
+    ───────────────────────────────────────── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --cream:   #ede4d7;
+      --cream2:  #e5dbd0;
+      --cream3:  #f3ece1;
+      --black:   #0E0D0B;
+      --black2:  #1A1915;
+      --mid:     #5A5650;
+      --muted:   #8A857E;
+      --border:  #D4CDC4;
+      --nav-h:   72px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--nav-h);
+    }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream3);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    /* ─────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────── */
+    .nav {
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      position: sticky;
+      top: 0;
+      z-index: 300;
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      line-height: 1;
+    }
+    /* Logo: ya integrado como <img src="logo.png"> en el HTML */
+    .nav-logo-main {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      color: var(--black);
+    }
+    .nav-logo-sub {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.55rem;
+      font-weight: 300;
+      letter-spacing: 0.38em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .nav-links a {
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      padding: 0 18px;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      border-bottom: 1.5px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--black);
+      border-bottom-color: var(--black);
+    }
+
+    .nav-cta {
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 1px solid var(--black);
+      padding: 9px 22px;
+      color: var(--black);
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+    }
+    .nav-cta:hover { background: var(--black); color: var(--cream); }
+
+    /* Hamburger — sólo visible en móvil */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      width: 36px;
+      height: 36px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--black);
+      transition: transform 0.3s, opacity 0.3s;
+      transform-origin: center;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Menú móvil desplegable */
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: var(--nav-h);
+      left: 0; right: 0;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 5%;
+      z-index: 290;
+      flex-direction: column;
+      gap: 0;
+    }
+    .nav-mobile.open { display: flex; }
+    .nav-mobile a {
+      font-size: 0.78rem;
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .nav-mobile a:last-child { border-bottom: none; }
+    .nav-mobile a:hover { color: var(--black); }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    .hero {
+      background: var(--cream);
+      min-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px 5% 70px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Marca de agua decorativa — eliminar si no se desea */
+    .hero-wm {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22rem;
+      font-weight: 300;
+      color: var(--cream2);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      letter-spacing: -0.05em;
+      pointer-events: none;
+      user-select: none;
+      line-height: 1;
+      aria-hidden: true;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 820px;
+      width: 100%;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .hero-eyebrow::before,
+    .hero-eyebrow::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* LOGO TIPOGRÁFICO
+       Logo ya integrado como <img src="logo.png"> en el HTML */
+    .hero-logo-wrap {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hero-logo-wrap img {
+      height: 140px;
+      width: auto;
+      max-width: 90%;
+    }
+    .hero-logo-initials {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5.5rem;
+      font-weight: 300;
+      color: var(--black);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .hero-logo-name {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      letter-spacing: 0.5em;
+      color: var(--black);
+      margin: 0.5rem 0 0.25rem;
+    }
+    .hero-logo-tag {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.6em;
+      color: var(--muted);
+    }
+
+    .hero-divider {
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+      margin: 2.5rem auto;
+    }
+
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--mid);
+      line-height: 1.8;
+      max-width: 560px;
+      margin: 0 auto 3rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      margin-top: 5rem;
+      border-top: 1px solid var(--border);
+      width: 100%;
+    }
+    .hero-stat {
+      flex: 1;
+      padding: 2rem 1rem;
+      text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-n {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1;
+    }
+    .hero-stat-l {
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    /* ─────────────────────────────────────────
+       BOTONES REUTILIZABLES
+    ───────────────────────────────────────── */
+    .btn-dark {
+      background: var(--black);
+      color: var(--cream);
+      padding: 13px 36px;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      border: 1px solid var(--black);
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+    }
+    .btn-dark:hover { background: transparent; color: var(--black); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--black);
+      padding: 13px 36px;
+      font-size: 0.7rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color 0.25s;
+    }
+    .btn-outline:hover { border-color: var(--black); }
+
+    /* ─────────────────────────────────────────
+       SECCIÓN BASE
+    ───────────────────────────────────────── */
+    .section { padding: 90px 5%; }
+    .s-inner  { max-width: 1100px; margin: 0 auto; }
+
+    .s-eyebrow {
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .s-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+    .s-title em { font-style: italic; }
+    .s-rule {
+      width: 32px;
+      height: 1px;
+      background: var(--black);
+      margin-bottom: 2rem;
+    }
+
+    /* ─────────────────────────────────────────
+       NOSOTROS
+    ───────────────────────────────────────── */
+    .about {
+      background: var(--cream3);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding-top: 52px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .about-body p {
+      font-size: 0.9rem;
+      font-weight: 300;
+      line-height: 1.95;
+      color: var(--mid);
+      margin-bottom: 1.2rem;
+    }
+    .about-pull {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1.65;
+      border-left: 1px solid var(--black);
+      padding-left: 1.5rem;
+      margin: 2.5rem 0;
+    }
+
+    .about-values {
+      border: 1px solid var(--border);
+    }
+    .about-value {
+      padding: 1.75rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .about-value:last-child { border-bottom: none; }
+    .about-value-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.2em;
+      margin-bottom: 0.5rem;
+    }
+    .about-value h4 {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      color: var(--black);
+      margin-bottom: 0.4rem;
+    }
+    .about-value p {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--mid);
+      line-height: 1.7;
+    }
+
+    /* ─────────────────────────────────────────
+       ÁREAS DE PRÁCTICA
+    ───────────────────────────────────────── */
+    .areas { background: var(--black); padding-top: 52px; }
+    .areas .s-eyebrow { color: rgba(255,255,255,0.3); }
+    .areas .s-title   { color: var(--cream); }
+    .areas .s-rule    { background: rgba(255,255,255,0.18); }
+
+    .areas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .area-card {
+      padding: 2.5rem 2rem;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.25s;
+    }
+    .area-card:hover { background: rgba(255,255,255,0.04); }
+    .area-card:nth-child(3n) { border-right: none; }
+    .area-card:nth-last-child(-n+3) { border-bottom: none; }
+
+    .area-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.07);
+      line-height: 1;
+      margin-bottom: 1.25rem;
+    }
+    .area-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 0.75rem;
+    }
+    .area-card p {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.42);
+      line-height: 1.8;
+    }
+
+    /* ─────────────────────────────────────────
+       EQUIPO JURÍDICO
+       ── INSTRUCCIÓN PARA PROGRAMADOR ──
+       Para agregar foto real, reemplazar
+       el bloque .team-ph por:
+         <img src="img/nombre.jpg" alt="Nombre Apellido"
+              style="width:100%;height:100%;
+                     object-fit:cover;object-position:top center">
+       Tamaño ideal: 400×600px, orientación vertical.
+       El overlay aparecerá encima de la foto al hacer hover.
+    ───────────────────────────────────────── */
+    .team {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      padding-top: 52px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+
+    .team-card {
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+    .team-card:last-child { border-right: none; }
+
+    /* Foto con overlay */
+    .team-photo {
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: var(--cream2);
+      cursor: default;
+    }
+
+    /* Placeholder (se quita cuando hay foto real) */
+    .team-ph {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      transition: opacity 0.35s, transform 0.35s;
+    }
+    .team-card:hover .team-ph {
+      opacity: 0;
+      transform: scale(1.04);
+    }
+    .ph-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 1px dashed var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ph-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke: var(--border);
+      fill: none;
+      stroke-width: 1.2;
+    }
+    .ph-text {
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--border);
+    }
+
+    /* Overlay de información (aparece al hacer hover) */
+    .team-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(14, 13, 11, 0.93);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.75rem;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none;
+    }
+    .team-card:hover .team-overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .to-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 0.15rem;
+    }
+    .to-role {
+      font-size: 0.58rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.8rem;
+    }
+    .to-divider {
+      width: 20px;
+      height: 1px;
+      background: rgba(255,255,255,0.25);
+      margin-bottom: 0.8rem;
+    }
+    .to-bio {
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.75;
+    }
+    .to-spec {
+      margin-top: 0.8rem;
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* Info debajo de la foto */
+    .team-info { padding: 1.5rem 1.25rem; flex: 1; }
+    .team-info h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--black);
+      margin-bottom: 0.2rem;
+    }
+    .team-rule {
+      width: 20px;
+      height: 1px;
+      background: var(--black);
+      margin: 0.6rem 0;
+    }
+    .team-role {
+      font-size: 0.63rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .team-area {
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: var(--mid);
+      line-height: 1.7;
+    }
+
+    /* ─────────────────────────────────────────
+       CONTACTO
+    ───────────────────────────────────────── */
+    .contact {
+      background: var(--cream3);
+      border-top: 1px solid var(--border);
+      padding-top: 52px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+
+    .contact-intro {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--mid);
+      line-height: 1.9;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-item:first-of-type { border-top: 1px solid var(--border); }
+    .ci-label {
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      min-width: 90px;
+      padding-top: 2px;
+    }
+    .ci-val {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1.65;
+    }
+    .ci-val a {
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .ci-val a:hover { border-color: var(--black); }
+
+    /* Formulario */
+    .form-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      padding: 3rem;
+    }
+    .form-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--black);
+      margin-bottom: 0.4rem;
+    }
+    .form-card-sub {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .fg { margin-bottom: 1.1rem; }
+    .fg label {
+      display: block;
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 0.45rem;
+    }
+    .fg input,
+    .fg select,
+    .fg textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--black);
+      background: var(--cream3);
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+    .fg input:focus,
+    .fg select:focus,
+    .fg textarea:focus {
+      outline: none;
+      border-color: var(--black);
+    }
+    .fg textarea {
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.7;
+    }
+    .fg-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* Estado del formulario */
+    .form-status {
+      margin-top: 1rem;
+      padding: 1rem 1.25rem;
+      font-size: 0.82rem;
+      font-weight: 300;
+      line-height: 1.7;
+      display: none;
+    }
+    .form-status.success {
+      display: block;
+      background: #F0F7F0;
+      border: 1px solid #B8D8B8;
+      color: #2D602D;
+    }
+    .form-status.error {
+      display: block;
+      background: #FDF0F0;
+      border: 1px solid #D8B8B8;
+      color: #602D2D;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--black);
+      color: var(--cream);
+      padding: 13px;
+      border: 1px solid var(--black);
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s;
+      margin-top: 0.5rem;
+    }
+    .btn-submit:hover:not(:disabled) { background: transparent; color: var(--black); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    footer {
+      background: var(--black2);
+      padding: 56px 5% 28px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-top {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer-brand-name {
+      font-family: 'Cormorant SC', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 0.4rem;
+    }
+    .footer-brand-tag {
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 1.25rem;
+    }
+    .footer-desc {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.8;
+      max-width: 280px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 1.25rem;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+    .footer-col ul li a {
+      font-size: 0.78rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: rgba(255,255,255,0.85); }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 1.5rem auto 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .footer-bottom p {
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .team-card:nth-child(2n) { border-right: none; }
+      .team-card:nth-child(n+3) { border-top: 1px solid var(--border); }
+    }
+
+    @media (max-width: 900px) {
+      .about-grid,
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .areas-grid { grid-template-columns: repeat(2, 1fr); }
+      .area-card:nth-child(3n)   { border-right: 1px solid rgba(255,255,255,0.08); }
+      .area-card:nth-child(2n)   { border-right: none; }
+      .area-card:nth-last-child(-n+2) { border-bottom: none; }
+      .area-card:nth-last-child(-n+3) { border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-wm { font-size: 7rem; }
+      .hero-logo-initials { font-size: 3rem; }
+      .s-title { font-size: 2rem; }
+      .areas-grid { grid-template-columns: 1fr; }
+      .area-card { border-right: none !important; }
+      .area-card:nth-last-child(-n+1) { border-bottom: none; }
+      .team-grid { grid-template-columns: 1fr; }
+      .team-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .team-card:last-child { border-bottom: none; }
+      .fg-row { grid-template-columns: 1fr; }
+      .hero-stats { flex-wrap: wrap; }
+      .hero-stat { min-width: 50%; border-bottom: 1px solid var(--border); }
+      .form-card { padding: 1.75rem; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════
+       NAVEGACIÓN
+  ══════════════════════════════════════ -->
+  <nav class="nav" role="navigation" aria-label="Navegación principal">
+
+    <a href="#inicio" class="nav-logo" aria-label="Rillón &amp; Lea-Plaza Abogados - Inicio">
+      <img src="Logo R&LP.png" alt="Rillón &amp; Lea-Plaza Abogados" style="height:74px;width:auto;">
+    </a>
+
+    <div class="nav-links" role="menubar">
+      <a href="#inicio"   role="menuitem">Inicio</a>
+      <a href="#nosotros" role="menuitem">Nosotros</a>
+      <a href="#areas"    role="menuitem">Áreas de Práctica</a>
+      <a href="#equipo"   role="menuitem">Equipo</a>
+      <a href="#contacto" role="menuitem">Contacto</a>
+    </div>
+
+    <button class="nav-cta btn-dark" onclick="goTo('contacto')" aria-label="Ir a formulario de contacto">
+      Consulta
+    </button>
+
+    <!-- Hamburger móvil -->
+    <button class="nav-hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- Menú móvil -->
+  <nav class="nav-mobile" id="mobile-menu" aria-label="Menú móvil">
+    <a href="#inicio"   onclick="closeMobile()">Inicio</a>
+    <a href="#nosotros" onclick="closeMobile()">Nosotros</a>
+    <a href="#areas"    onclick="closeMobile()">Áreas de Práctica</a>
+    <a href="#equipo"   onclick="closeMobile()">Equipo Jurídico</a>
+    <a href="#contacto" onclick="closeMobile()">Contacto</a>
+  </nav>
+
+
+  <!-- ══════════════════════════════════════
+       HERO
+  ══════════════════════════════════════ -->
+  <section class="hero" id="inicio" aria-label="Inicio">
+    <div class="hero-wm" aria-hidden="true">R&amp;L</div>
+
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Estudio Jurídico · Santiago, Chile</p>
+
+      <div class="hero-logo-wrap" aria-label="Rillón &amp; Lea-Plaza Abogados">
+        <img src="Logo R&LP.png" alt="Rillón &amp; Lea-Plaza Abogados">
+      </div>
+
+      <div class="hero-divider" aria-hidden="true"></div>
+
+      <!-- EDITAR: frase principal del estudio -->
+      <p class="hero-tagline">
+        Asesoría jurídica de excelencia para empresas y personas.<br>
+        Compromiso, confidencialidad y precisión en cada caso.
+      </p>
+
+      <div class="hero-actions">
+        <button class="btn-dark" onclick="goTo('contacto')">
+          Agendar consulta
+        </button>
+        <button class="btn-outline" onclick="goTo('areas')">
+          Áreas de práctica
+        </button>
+      </div>
+
+      <!-- EDITAR: reemplazar cifras por datos reales del estudio -->
+      <div class="hero-stats" role="list" aria-label="Estadísticas del estudio">
+        <div class="hero-stat" role="listitem">
+          <div class="hero-stat-n">20+</div>
+          <div class="hero-stat-l">Años de trayectoria</div>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <div class="hero-stat-n">600+</div>
+          <div class="hero-stat-l">Casos resueltos</div>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <div class="hero-stat-n">6</div>
+          <div class="hero-stat-l">Áreas especializadas</div>
+        </div>
+        <div class="hero-stat" role="listitem">
+          <div class="hero-stat-n">100%</div>
+          <div class="hero-stat-l">Confidencialidad</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       NOSOTROS
+  ══════════════════════════════════════ -->
+  <section class="section about" id="nosotros" aria-labelledby="about-title">
+    <div class="s-inner">
+      <div class="about-grid">
+
+        <div class="about-body">
+          <p class="s-eyebrow">Quiénes somos</p>
+          <h2 class="s-title" id="about-title">
+            Un estudio construido sobre la <em>confianza</em>
+          </h2>
+          <div class="s-rule" aria-hidden="true"></div>
+
+          <!-- EDITAR: texto real del estudio -->
+          <p>Rillón &amp; Lea-Plaza es un estudio jurídico con presencia consolidada en Santiago de Chile, especializado en brindar asesoría legal de alto nivel a empresas, organizaciones y personas naturales.</p>
+          <p>Fundado con el propósito de combinar rigor técnico y cercanía con el cliente, nuestro equipo actúa con la convicción de que cada caso merece atención personalizada y una estrategia diseñada a medida.</p>
+          <p>Estamos inscritos en el Colegio de Abogados de Chile A.G. y operamos bajo los más exigentes estándares éticos de la profesión.</p>
+
+          <!-- EDITAR: cita representativa del estudio -->
+          <blockquote class="about-pull">
+            "La excelencia jurídica no está reñida con el trato humano. Ambos son inseparables en nuestra práctica."
+          </blockquote>
+        </div>
+
+        <div>
+          <div class="about-values">
+            <div class="about-value">
+              <div class="about-val-num">01</div>
+              <h4>Confidencialidad absoluta</h4>
+              <p>Todo lo que nos confíes permanece protegido bajo estricto secreto profesional.</p>
+            </div>
+            <div class="about-value">
+              <div class="about-val-num">02</div>
+              <h4>Excelencia jurídica</h4>
+              <p>Formación de primer nivel y actualización constante en legislación chilena e internacional.</p>
+            </div>
+            <div class="about-value">
+              <div class="about-val-num">03</div>
+              <h4>Atención personalizada</h4>
+              <p>Cada cliente accede directamente a los abogados de su caso, sin intermediarios.</p>
+            </div>
+            <div class="about-value">
+              <div class="about-val-num">04</div>
+              <h4>Respuesta oportuna</h4>
+              <p>Respondemos toda consulta en menos de 24 horas hábiles, con claridad y precisión.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       ÁREAS DE PRÁCTICA
+  ══════════════════════════════════════ -->
+  <section class="section areas" id="areas" aria-labelledby="areas-title">
+    <div class="s-inner">
+      <p class="s-eyebrow">Especialidades</p>
+      <h2 class="s-title" id="areas-title">Áreas de Práctica</h2>
+      <div class="s-rule" style="background:rgba(255,255,255,0.18)" aria-hidden="true"></div>
+
+      <div class="areas-grid" role="list">
+
+        <!-- EDITAR: texto descriptivo de cada área -->
+        <article class="area-card" role="listitem">
+          <div class="area-num" aria-hidden="true">01</div>
+          <h3>Derecho Laboral</h3>
+          <p>Representación en despidos, tutela de derechos fundamentales, negociación colectiva y cumplimiento normativo para empresas.</p>
+        </article>
+
+        <article class="area-card" role="listitem">
+          <div class="area-num" aria-hidden="true">02</div>
+          <h3>Derecho Corporativo</h3>
+          <p>Constitución de sociedades, fusiones y adquisiciones, contratos mercantiles y asesoría continua a empresas nacionales e internacionales.</p>
+        </article>
+
+        <article class="area-card" role="listitem">
+          <div class="area-num" aria-hidden="true">03</div>
+          <h3>Derecho de Familia</h3>
+          <p>Divorcios, tuición, alimentos, adopciones, acuerdos de unión civil y mediación familiar con enfoque humano y confidencial.</p>
+        </article>
+
+        <article class="area-card" role="listitem">
+          <div class="area-num" aria-hidden="true">04</div>
+          <h3>Derecho Inmobiliario</h3>
+          <p>Compraventas, contratos de arriendo, regularizaciones y due diligence en operaciones inmobiliarias complejas.</p>
+        </article>
+
+        <article class="area-card" role="listitem">
+          <div class="area-num" aria-hidden="true">05</div>
+          <h3>Derecho Civil</h3>
+          <p>Contratos, responsabilidad civil, herencias, testamentos y cobro de deudas. Soluciones precisas para conflictos patrimoniales.</p>
+        </article>
+
+        <article class="area-card" role="listitem">
+          <div class="area-num" aria-hidden="true">06</div>
+          <h3>Derecho Penal</h3>
+          <p>Defensa penal, querellante en delitos económicos y compliance penal empresarial en todas las etapas del proceso.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       EQUIPO JURÍDICO
+       Hover sobre la foto para ver el bio.
+
+       Para agregar foto real, reemplazar el
+       div.team-ph completo dentro de .team-photo
+       por una etiqueta <img>:
+         <img src="img/nombre.jpg" alt="Nombre"
+              style="width:100%;height:100%;
+                     object-fit:cover;
+                     object-position:top center">
+       El overlay aparece automáticamente
+       encima de la foto al hacer hover.
+  ══════════════════════════════════════ -->
+  <section class="section team" id="equipo" aria-labelledby="team-title">
+    <div class="s-inner">
+      <p class="s-eyebrow">Nuestros profesionales</p>
+      <h2 class="s-title" id="team-title">Equipo Jurídico</h2>
+      <div class="s-rule" aria-hidden="true"></div>
+
+      <div class="team-grid" role="list">
+
+        <!-- ── ABOGADO 1 — EDITAR con datos reales ── -->
+        <article class="team-card" role="listitem">
+          <div class="team-photo" aria-label="Fotografía de María José Arredondo P.">
+
+            <!-- Reemplazar por <img> cuando esté disponible la foto -->
+            <div class="team-ph" aria-hidden="true">
+              <div class="ph-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/>
+                </svg>
+              </div>
+              <span class="ph-text">Fotografía</span>
+            </div>
+
+            <!-- Overlay con información — aparece al hacer hover -->
+            <div class="team-overlay" aria-hidden="true">
+              <div class="to-name">María Juanita Pérez P.</div>
+              <div class="to-role">Socia Fundadora</div>
+              <div class="to-divider"></div>
+              <!-- EDITAR: bio completa para el overlay -->
+              <p class="to-bio">Abogada de la Universidad de Chile. LLM en Derecho Corporativo por la Universidad de Londres. Más de 18 años asesorando grandes empresas en fusiones, adquisiciones y estructuración societaria.</p>
+              <!-- EDITAR: especialidades -->
+              <p class="to-spec">Corporativo · M&amp;A · Contratos Internacionales</p>
+            </div>
+          </div>
+
+          <div class="team-info">
+            <!-- EDITAR: nombre y cargo real -->
+            <h3>María Juanita Pérez P.</h3>
+            <div class="team-rule" aria-hidden="true"></div>
+            <div class="team-role">Socia Fundadora</div>
+            <!-- EDITAR: especialidad principal -->
+            <p class="team-area">Derecho Corporativo y M&amp;A</p>
+          </div>
+        </article>
+
+        <!-- ── ABOGADO 2 — EDITAR con datos reales ── -->
+        <article class="team-card" role="listitem">
+          <div class="team-photo" aria-label="Fotografía de Cristóbal Ibáñez R.">
+            <div class="team-ph" aria-hidden="true">
+              <div class="ph-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/>
+                </svg>
+              </div>
+              <span class="ph-text">Fotografía</span>
+            </div>
+            <div class="team-overlay" aria-hidden="true">
+              <div class="to-name">Pepito Pérez R.</div>
+              <div class="to-role">Socio Fundador</div>
+              <div class="to-divider"></div>
+              <p class="to-bio">Abogado de la Pontificia Universidad Católica de Chile. Magíster en Derecho del Trabajo. Más de 15 años representando empresas y trabajadores en procesos judiciales y negociaciones colectivas.</p>
+              <p class="to-spec">Laboral · Compliance · Negociación Colectiva</p>
+            </div>
+          </div>
+          <div class="team-info">
+            <h3>Pepito Pérez R.</h3>
+            <div class="team-rule" aria-hidden="true"></div>
+            <div class="team-role">Socio Fundador</div>
+            <p class="team-area">Derecho Laboral y Compliance</p>
+          </div>
+        </article>
+
+        <!-- ── ABOGADO 3 — EDITAR con datos reales ── -->
+        <article class="team-card" role="listitem">
+          <div class="team-photo" aria-label="Fotografía de Catalina Fuentes A.">
+            <div class="team-ph" aria-hidden="true">
+              <div class="ph-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/>
+                </svg>
+              </div>
+              <span class="ph-text">Fotografía</span>
+            </div>
+            <div class="team-overlay" aria-hidden="true">
+              <div class="to-name">Lalita Pérez A.</div>
+              <div class="to-role">Asociada Senior</div>
+              <div class="to-divider"></div>
+              <p class="to-bio">Abogada de la Universidad Diego Portales. Mediadora familiar certificada por el Ministerio de Justicia. Especialista en procesos de divorcio, tuición y acuerdos de unión civil.</p>
+              <p class="to-spec">Familia · Mediación · Sucesiones</p>
+            </div>
+          </div>
+          <div class="team-info">
+            <h3>Lalita Pérez A.</h3>
+            <div class="team-rule" aria-hidden="true"></div>
+            <div class="team-role">Asociada Senior</div>
+            <p class="team-area">Derecho de Familia y Civil</p>
+          </div>
+        </article>
+
+        <!-- ── ABOGADO 4 — EDITAR con datos reales ── -->
+        <article class="team-card" role="listitem">
+          <div class="team-photo" aria-label="Fotografía de Diego Navarro C.">
+            <div class="team-ph" aria-hidden="true">
+              <div class="ph-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/>
+                </svg>
+              </div>
+              <span class="ph-text">Fotografía</span>
+            </div>
+            <div class="team-overlay" aria-hidden="true">
+              <div class="to-name">Pablito Pérez A.</div>
+              <div class="to-role">Asociado</div>
+              <div class="to-divider"></div>
+              <p class="to-bio">Abogado de la Universidad de Concepción. Diplomado en Derecho Penal Económico. Experiencia en defensa penal, delitos tributarios y due diligence en operaciones inmobiliarias de alto valor.</p>
+              <p class="to-spec">Penal · Inmobiliario · Due Diligence</p>
+            </div>
+          </div>
+          <div class="team-info">
+            <h3>Pablito Pérez A.</h3>
+            <div class="team-rule" aria-hidden="true"></div>
+            <div class="team-role">Asociado</div>
+            <p class="team-area">Derecho Penal e Inmobiliario</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       CONTACTO
+       El formulario envía un email al estudio
+       usando EmailJS. Ver configuración al inicio
+       del archivo y en el bloque <script>.
+  ══════════════════════════════════════ -->
+  <section class="section contact" id="contacto" aria-labelledby="contact-title">
+    <div class="s-inner">
+      <div class="contact-grid">
+
+        <!-- Información de contacto -->
+        <div>
+          <p class="s-eyebrow">Escríbenos</p>
+          <h2 class="s-title" id="contact-title">Contacto</h2>
+          <div class="s-rule" aria-hidden="true"></div>
+
+          <p class="contact-intro">
+            Estamos disponibles para atender tu consulta. Un abogado especializado en tu área
+            responderá directamente a tu correo en menos de 24 horas hábiles.
+          </p>
+
+          <!-- EDITAR: datos reales del estudio -->
+          <div class="contact-item">
+            <span class="ci-label">Correo</span>
+            <div class="ci-val">
+              <a href="mailto:contacto@rillonleaplaza.cl">contacto@rillonleaplaza.cl</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="ci-label">Teléfono</span>
+            <div class="ci-val">
+              <a href="tel:+5622000000">+56 2 XXXX XXXX</a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="ci-label">Dirección</span>
+            <div class="ci-val">
+              Av. Apoquindo XXXX, Piso X<br>
+              Las Condes, Santiago, Chile
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="ci-label">Horario</span>
+            <div class="ci-val">Lunes a Viernes · 9:00 – 18:00 hrs</div>
+          </div>
+        </div>
+
+        <!-- Formulario -->
+        <div>
+          <div class="form-card">
+            <h3 class="form-card-title">Envíanos tu consulta</h3>
+            <p class="form-card-sub">Completa el formulario y te responderemos a tu correo electrónico en menos de 24 horas hábiles.</p>
+
+            <form id="contact-form" novalidate>
+
+              <div class="fg-row">
+                <div class="fg">
+                  <label for="f-nombre">Nombre <span aria-hidden="true">*</span></label>
+                  <input id="f-nombre" name="from_name" type="text"
+                         placeholder="Tu nombre completo"
+                         autocomplete="name" required>
+                </div>
+                <div class="fg">
+                  <label for="f-tel">Teléfono</label>
+                  <input id="f-tel" name="phone" type="tel"
+                         placeholder="+56 9 XXXX XXXX"
+                         autocomplete="tel">
+                </div>
+              </div>
+
+              <div class="fg">
+                <label for="f-email">Correo electrónico <span aria-hidden="true">*</span></label>
+                <input id="f-email" name="from_email" type="email"
+                       placeholder="tucorreo@ejemplo.com"
+                       autocomplete="email" required>
+              </div>
+
+              <div class="fg">
+                <label for="f-area">Área legal <span aria-hidden="true">*</span></label>
+                <select id="f-area" name="area" required>
+                  <option value="">Selecciona un área</option>
+                  <option value="Derecho Laboral">Derecho Laboral</option>
+                  <option value="Derecho Corporativo">Derecho Corporativo</option>
+                  <option value="Derecho de Familia">Derecho de Familia</option>
+                  <option value="Derecho Inmobiliario">Derecho Inmobiliario</option>
+                  <option value="Derecho Civil">Derecho Civil</option>
+                  <option value="Derecho Penal">Derecho Penal</option>
+                  <option value="No sé / Necesito orientación">No sé / Necesito orientación</option>
+                </select>
+              </div>
+
+              <div class="fg">
+                <label for="f-desc">Descripción del caso <span aria-hidden="true">*</span></label>
+                <textarea id="f-desc" name="message"
+                          placeholder="Cuéntanos brevemente tu situación y lo que necesitas..."
+                          required></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit" id="f-btn">
+                Enviar consulta
+              </button>
+
+            </form>
+
+            <!-- Mensajes de estado -->
+            <div class="form-status" id="f-status" role="alert" aria-live="polite"></div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       FOOTER
+  ══════════════════════════════════════ -->
+  <footer role="contentinfo">
+    <div class="footer-top">
+
+      <div>
+        <!-- EDITAR: nombre real del estudio -->
+        <div class="footer-brand-name">Rillón &amp; Lea-Plaza</div>
+        <div class="footer-brand-tag">Abogados</div>
+        <p class="footer-desc">
+          Estudio jurídico especializado en derecho civil, corporativo, laboral y de familia.
+          Con sede en Santiago de Chile. Colegio de Abogados de Chile A.G.
+        </p>
+      </div>
+
+      <nav class="footer-col" aria-label="Áreas de práctica">
+        <h4>Áreas</h4>
+        <ul>
+          <li><a href="#areas">Derecho Laboral</a></li>
+          <li><a href="#areas">Derecho Corporativo</a></li>
+          <li><a href="#areas">Derecho de Familia</a></li>
+          <li><a href="#areas">Derecho Inmobiliario</a></li>
+          <li><a href="#areas">Derecho Civil</a></li>
+          <li><a href="#areas">Derecho Penal</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-label="Información de contacto">
+        <h4>Contacto</h4>
+        <ul>
+          <!-- EDITAR: datos reales -->
+          <li><a href="mailto:contacto@rillonleaplaza.cl">contacto@rillonleaplaza.cl</a></li>
+          <li><a href="tel:+5622000000">+56 2 XXXX XXXX</a></li>
+          <li><a href="#contacto">Av. Apoquindo XXXX<br>Las Condes, Santiago</a></li>
+        </ul>
+      </nav>
+
+    </div>
+
+    <div class="footer-bottom">
+      <!-- EDITAR: año y nombre real -->
+      <p>© 2025 Rillón &amp; Lea-Plaza Abogados · Todos los derechos reservados.</p>
+      <p>Colegio de Abogados de Chile A.G.</p>
+    </div>
+  </footer>
+
+
+  <!-- ══════════════════════════════════════
+       JAVASCRIPT
+  ══════════════════════════════════════ -->
+  <script>
+    /* ─────────────────────────────────────
+       EMAILJS — CONFIGURACIÓN
+       Reemplazar los valores de abajo con
+       los de tu cuenta en emailjs.com
+    ───────────────────────────────────── */
+    const EMAILJS_CONFIG = {
+      publicKey:  'TU_PUBLIC_KEY',     // Account → API Keys → Public Key
+      serviceId:  'TU_SERVICE_ID',     // Email Services → Service ID
+      templateId: 'TU_TEMPLATE_ID',   // Email Templates → Template ID
+    };
+
+    // Inicializar EmailJS
+    emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
+
+
+    /* ─────────────────────────────────────
+       FORMULARIO DE CONTACTO
+    ───────────────────────────────────── */
+    const form   = document.getElementById('contact-form');
+    const btn    = document.getElementById('f-btn');
+    const status = document.getElementById('f-status');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Validación básica
+      const nombre = document.getElementById('f-nombre').value.trim();
+      const email  = document.getElementById('f-email').value.trim();
+      const area   = document.getElementById('f-area').value;
+      const desc   = document.getElementById('f-desc').value.trim();
+
+      if (!nombre || !email || !area || !desc) {
+        showStatus('Por favor completa todos los campos obligatorios (*).', 'error');
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showStatus('Por favor ingresa un correo electrónico válido.', 'error');
+        return;
+      }
+
+      // Estado de carga
+      btn.disabled = true;
+      btn.textContent = 'Enviando…';
+      hideStatus();
+
+      try {
+        await emailjs.sendForm(
+          EMAILJS_CONFIG.serviceId,
+          EMAILJS_CONFIG.templateId,
+          form
+        );
+
+        // Éxito
+        showStatus(
+          '✓ Tu consulta fue enviada correctamente. Un abogado te responderá en menos de 24 horas hábiles al correo ' + email + '.',
+          'success'
+        );
+        form.reset();
+        btn.textContent = 'Consulta enviada';
+        btn.style.cssText = 'background:transparent;color:var(--black);border-color:var(--border);';
+
+      } catch (err) {
+        // Error
+        console.error('EmailJS error:', err);
+        showStatus(
+          'Error al enviar el formulario. Por favor escríbenos directamente a contacto@rillonleaplaza.cl',
+          'error'
+        );
+        btn.disabled = false;
+        btn.textContent = 'Enviar consulta';
+      }
+    });
+
+    function showStatus(message, type) {
+      status.textContent = message;
+      status.className = 'form-status ' + type;
+    }
+
+    function hideStatus() {
+      status.className = 'form-status';
+    }
+
+
+    /* ─────────────────────────────────────
+       NAVEGACIÓN — MENÚ MÓVIL
+    ───────────────────────────────────── */
+    const hamburger  = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+      hamburger.setAttribute('aria-expanded', isOpen);
+    });
+
+    function closeMobile() {
+      mobileMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+
+
+    /* ─────────────────────────────────────
+       NAVEGACIÓN — LINK ACTIVO CON SCROLL
+    ───────────────────────────────────── */
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.nav-links a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => {
+            link.classList.toggle(
+              'active',
+              link.getAttribute('href') === '#' + entry.target.id
+            );
+          });
+        }
+      });
+    }, {
+      rootMargin: '-40% 0px -55% 0px',
+      threshold: 0
+    });
+
+    sections.forEach(s => observer.observe(s));
+
+
+    /* ─────────────────────────────────────
+       HELPER — SCROLL SUAVE
+    ───────────────────────────────────── */
+    function goTo(id) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>

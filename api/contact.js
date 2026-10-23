@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,23 +14,12 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
 
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.office365.com',
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-    tls: {
-      ciphers: 'SSLv3',
-    },
-  });
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
-  await transporter.sendMail({
-    from: `"Web Rillón & Lea-Plaza" <${process.env.EMAIL_USER}>`,
+  await resend.emails.send({
+    from: 'Web Rillón & Lea-Plaza <web@rillonleaplaza.cl>',
     to: process.env.EMAIL_TO,
-    replyTo: from_email,
+    reply_to: from_email,
     subject: `Nueva consulta web · ${area}`,
     html: `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a;">

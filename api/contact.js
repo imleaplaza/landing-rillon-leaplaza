@@ -14,38 +14,60 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  if (!process.env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY no configurada');
+    return res.status(500).json({ error: 'Configuración de email faltante' });
+  }
 
-  await resend.emails.send({
-    from: 'Web Rillón & Lea-Plaza <web@rillonleaplaza.cl>',
-    to: process.env.EMAIL_TO,
-    reply_to: from_email,
-    subject: `Nueva consulta web · ${area}`,
-    html: `
-      <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a;">
-        <h2 style="border-bottom:1px solid #e0d8cc;padding-bottom:12px;color:#0e0d0b;">
-          Nueva consulta desde la web
-        </h2>
-        <table style="width:100%;border-collapse:collapse;">
-          <tr><td style="padding:8px 0;color:#888;width:120px;">Nombre</td>
-              <td style="padding:8px 0;font-weight:500;">${from_name}</td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Email</td>
-              <td style="padding:8px 0;"><a href="mailto:${from_email}">${from_email}</a></td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Teléfono</td>
-              <td style="padding:8px 0;">${phone || '—'}</td></tr>
-          <tr><td style="padding:8px 0;color:#888;">Área legal</td>
-              <td style="padding:8px 0;font-weight:500;">${area}</td></tr>
-        </table>
-        <h3 style="margin-top:24px;margin-bottom:8px;color:#0e0d0b;">Mensaje</h3>
-        <p style="background:#f7f3ee;padding:16px;border-left:3px solid #0e0d0b;line-height:1.7;">
-          ${message.replace(/\n/g, '<br>')}
-        </p>
-        <p style="margin-top:24px;font-size:12px;color:#aaa;">
-          Enviado desde rillonleaplaza.cl
-        </p>
-      </div>
-    `,
-  });
+  if (!process.env.EMAIL_TO) {
+    console.error('EMAIL_TO no configurada');
+    return res.status(500).json({ error: 'Configuración de destino faltante' });
+  }
 
-  return res.status(200).json({ ok: true });
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    const { data, error } = await resend.emails.send({
+      from: 'Web Rillón & Lea-Plaza <onboarding@resend.dev>',
+      to: process.env.EMAIL_TO,
+      reply_to: from_email,
+      subject: `Nueva consulta web · ${area}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a1a;">
+          <h2 style="border-bottom:1px solid #e0d8cc;padding-bottom:12px;color:#0e0d0b;">
+            Nueva consulta desde la web
+          </h2>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr><td style="padding:8px 0;color:#888;width:120px;">Nombre</td>
+                <td style="padding:8px 0;font-weight:500;">${from_name}</td></tr>
+            <tr><td style="padding:8px 0;color:#888;">Email</td>
+                <td style="padding:8px 0;"><a href="mailto:${from_email}">${from_email}</a></td></tr>
+            <tr><td style="padding:8px 0;color:#888;">Teléfono</td>
+                <td style="padding:8px 0;">${phone || '—'}</td></tr>
+            <tr><td style="padding:8px 0;color:#888;">Área legal</td>
+                <td style="padding:8px 0;font-weight:500;">${area}</td></tr>
+          </table>
+          <h3 style="margin-top:24px;margin-bottom:8px;color:#0e0d0b;">Mensaje</h3>
+          <p style="background:#f7f3ee;padding:16px;border-left:3px solid #0e0d0b;line-height:1.7;">
+            ${message.replace(/\n/g, '<br>')}
+          </p>
+          <p style="margin-top:24px;font-size:12px;color:#aaa;">
+            Enviado desde rillonleaplaza.cl
+          </p>
+        </div>
+      `,
+    });
+
+    if (error) {
+      console.error('Resend error:', error);
+      return res.status(500).json({ error: error.message });
+    }
+
+    console.log('Email enviado, id:', data.id);
+    return res.status(200).json({ ok: true });
+
+  } catch (err) {
+    console.error('Error inesperado:', err);
+    return res.status(500).json({ error: 'Error interno al enviar el correo' });
+  }
 };

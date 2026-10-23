@@ -10,26 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cormorant+SC:wght@300;400;500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 
-  <!--
-  ═══════════════════════════════════════════════
-  EMAILJS — CONFIGURACIÓN PARA PROGRAMADOR
-  ───────────────────────────────────────────────
-  1. Crear cuenta gratuita en https://www.emailjs.com/
-  2. Ir a Email Services → Add New Service → conectar Gmail/Outlook
-  3. Ir a Email Templates → Create New Template
-     Asignar estas variables en el template:
-       {{from_name}}   → nombre del consultante
-       {{from_email}}  → email del consultante
-       {{phone}}       → teléfono
-       {{area}}        → área legal
-       {{message}}     → descripción del caso
-     El "To Email" del template debe ser el correo del estudio.
-  4. Copiar: Service ID, Template ID, Public Key
-  5. Pegar abajo en EMAILJS_CONFIG
-  ═══════════════════════════════════════════════
-  -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
   <style>
     /* ─────────────────────────────────────────
        RESET Y VARIABLES
@@ -1476,22 +1456,9 @@
   ══════════════════════════════════════ -->
   <script>
     /* ─────────────────────────────────────
-       EMAILJS — CONFIGURACIÓN
-       Reemplazar los valores de abajo con
-       los de tu cuenta en emailjs.com
-    ───────────────────────────────────── */
-    const EMAILJS_CONFIG = {
-      publicKey:  'TU_PUBLIC_KEY',     // Account → API Keys → Public Key
-      serviceId:  'TU_SERVICE_ID',     // Email Services → Service ID
-      templateId: 'TU_TEMPLATE_ID',   // Email Templates → Template ID
-    };
-
-    // Inicializar EmailJS
-    emailjs.init({ publicKey: EMAILJS_CONFIG.publicKey });
-
-
-    /* ─────────────────────────────────────
        FORMULARIO DE CONTACTO
+       Envía a /api/contact (función serverless)
+       Las credenciales viven en .env / Vercel dashboard
     ───────────────────────────────────── */
     const form   = document.getElementById('contact-form');
     const btn    = document.getElementById('f-btn');
@@ -1500,9 +1467,9 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      // Validación básica
       const nombre = document.getElementById('f-nombre').value.trim();
       const email  = document.getElementById('f-email').value.trim();
+      const phone  = document.getElementById('f-tel').value.trim();
       const area   = document.getElementById('f-area').value;
       const desc   = document.getElementById('f-desc').value.trim();
 
@@ -1517,19 +1484,25 @@
         return;
       }
 
-      // Estado de carga
       btn.disabled = true;
       btn.textContent = 'Enviando…';
       hideStatus();
 
       try {
-        await emailjs.sendForm(
-          EMAILJS_CONFIG.serviceId,
-          EMAILJS_CONFIG.templateId,
-          form
-        );
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            from_name: nombre,
+            from_email: email,
+            phone,
+            area,
+            message: desc,
+          }),
+        });
 
-        // Éxito
+        if (!res.ok) throw new Error('Error del servidor');
+
         showStatus(
           '✓ Tu consulta fue enviada correctamente. Un abogado te responderá en menos de 24 horas hábiles al correo ' + email + '.',
           'success'
@@ -1539,8 +1512,7 @@
         btn.style.cssText = 'background:transparent;color:var(--black);border-color:var(--border);';
 
       } catch (err) {
-        // Error
-        console.error('EmailJS error:', err);
+        console.error('Error al enviar:', err);
         showStatus(
           'Error al enviar el formulario. Por favor escríbenos directamente a contacto@rillonleaplaza.cl',
           'error'

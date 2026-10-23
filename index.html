@@ -1508,8 +1508,14 @@
           'success'
         );
         form.reset();
-        btn.textContent = 'Consulta enviada';
+        btn.textContent = '✓ Consulta enviada';
         btn.style.cssText = 'background:transparent;color:var(--black);border-color:var(--border);';
+
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.textContent = 'Enviar consulta';
+          btn.style.cssText = '';
+        }, 4000);
 
       } catch (err) {
         console.error('Error al enviar:', err);

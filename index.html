@@ -290,7 +290,28 @@
       color: var(--mid);
       line-height: 1.8;
       max-width: 560px;
+      margin: 0 auto 1.4rem;
+    }
+    .hero-sello {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
       margin: 0 auto 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      max-width: 400px;
+    }
+    .hero-sello::before,
+    .hero-sello::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
 
     .hero-actions {
@@ -1003,6 +1024,8 @@
         Asesoría jurídica de excelencia para empresas y personas.<br>
         Compromiso, confidencialidad y precisión en cada caso.
       </p>
+
+      <p class="hero-sello">Solucionamos problemas complejos</p>
 
       <div class="hero-actions">
         <button class="btn-dark" onclick="goTo('contacto')">

@@ -541,18 +541,17 @@
 
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 340px));
+      grid-template-columns: repeat(2, minmax(0, 360px));
       justify-content: center;
-      border: 1px solid var(--border);
+      gap: 2rem;
       margin-top: 3rem;
     }
 
     .team-card {
-      border-right: 1px solid var(--border);
+      border: 1px solid var(--border);
       display: flex;
       flex-direction: column;
     }
-    .team-card:last-child { border-right: none; }
 
     /* Foto con overlay */
     .team-photo {

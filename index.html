@@ -563,6 +563,14 @@
       cursor: default;
     }
 
+    .team-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
     /* Placeholder (se quita cuando hay foto real) */
     .team-ph {
       width: 100%;
@@ -1176,14 +1184,7 @@
 
         <article class="team-card" role="listitem">
           <div class="team-photo" aria-label="Fotografía de Cristián Rillon Fontaine">
-            <div class="team-ph" aria-hidden="true">
-              <div class="ph-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/>
-                </svg>
-              </div>
-              <span class="ph-text">CRF</span>
-            </div>
+            <img src="CRF.jpg" alt="Cristián Rillon Fontaine">
             <div class="team-overlay" aria-hidden="true">
               <div class="to-name">Cristián Rillon Fontaine</div>
               <div class="to-role">Abogado fundador</div>
@@ -1199,14 +1200,7 @@
 
         <article class="team-card" role="listitem">
           <div class="team-photo" aria-label="Fotografía de Pedro Lea-Plaza Edwards">
-            <div class="team-ph" aria-hidden="true">
-              <div class="ph-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/>
-                </svg>
-              </div>
-              <span class="ph-text">PLP</span>
-            </div>
+            <img src="PLP.jpg" alt="Pedro Lea-Plaza Edwards">
             <div class="team-overlay" aria-hidden="true">
               <div class="to-name">Pedro Lea-Plaza Edwards</div>
               <div class="to-role">Abogado fundador</div>

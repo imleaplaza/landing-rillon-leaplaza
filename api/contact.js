@@ -28,7 +28,7 @@ module.exports = async (req, res) => {
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     const { data, error } = await resend.emails.send({
-      from: 'Web Rillón & Lea-Plaza <onboarding@resend.dev>',
+      from: 'Web Rillon & Lea-Plaza <web@rillon-leaplaza.cl>',
       to: process.env.EMAIL_TO,
       reply_to: from_email,
       subject: `Nueva consulta web · ${area}`,
